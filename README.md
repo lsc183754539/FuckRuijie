@@ -1,5 +1,5 @@
 # PwnRuijiePortal  
-![python 3.7](https://img.shields.io/badge/Python-3.7-brightgreen)
+![python 3.7](https://img.shields.io/badge/Python-3.7-brightgreen.svg)
 ![Issuescolsed](https://img.shields.io/badge/Issues%20closed%20in-about%2012hours-brightgreen)
 ***  
 2018年10月13日上传`getInfo.py`  
